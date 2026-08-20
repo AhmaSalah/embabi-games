@@ -1590,3 +1590,27 @@ body {
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
+
+/* --- Mobile UX Fine-tuning --- */
+@media (max-width: 520px) {
+  .player-card--formation {
+    width: clamp(2.8rem, 10vw, 3.8rem) !important;
+    height: clamp(4rem, 14vw, 5.5rem) !important;
+    min-width: clamp(2.8rem, 10vw, 3.8rem) !important;
+  }
+  .player-card--formation .player-card__name {
+    font-size: clamp(0.42rem, 1.8vw, 0.5rem) !important;
+  }
+  
+  .bid-input,
+  .btn--bid {
+    height: 3.5rem;
+  }
+}
+
+.player-card--auction {
+  min-height: 14rem;
+}
+.player-card--auction .player-card__name {
+  font-size: clamp(1.3rem, 4vw, 1.5rem);
+}
