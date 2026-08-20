@@ -1604,13 +1604,18 @@ body {
   
   .bid-input,
   .btn--bid {
-    height: 3.5rem;
+    height: 4.5rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
   }
-}
 
-.player-card--auction {
-  min-height: 14rem;
-}
-.player-card--auction .player-card__name {
-  font-size: clamp(1.3rem, 4vw, 1.5rem);
+  .player-card--auction {
+    width: 95%;
+    min-height: 17rem;
+    padding: 1.5rem 1.2rem;
+    margin: 0 auto;
+  }
+  .player-card--auction .player-card__name {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+  }
 }
