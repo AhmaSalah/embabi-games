@@ -269,8 +269,6 @@
   const p2Title = document.getElementById('p2-title');
 
   // DOM — Scoreboard
-  const scoreboardPreparing = document.getElementById('scoreboard-preparing');
-  const scoreboardResult = document.getElementById('scoreboard-result');
   const sbP1Label = document.getElementById('sb-p1-label');
   const sbP1Goals = document.getElementById('sb-p1-goals');
   const sbP1Ovr = document.getElementById('sb-p1-ovr');
