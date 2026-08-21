@@ -29,6 +29,36 @@
   --radius:        14px;
   --radius-sm:     10px;
   --transition:    0.15s ease;
+  
+  --bg-grad-1:     #163528;
+  --bg-grad-2:     #0a1210;
+  --lobby-grad-1:  rgba(22, 70, 48, 0.55);
+  --lobby-grad-2:  #0c1a14;
+}
+
+.light-theme {
+  --void:          #f4f7f5;
+  --panel:         #ffffff;
+  --panel-2:       #f9fbfc;
+  --panel-border:  rgba(15, 61, 40, 0.15);
+  --pitch-a:       #cde4d3;
+  --pitch-b:       #dcf0e0;
+  --line:          rgba(15, 61, 40, 0.20);
+  --line-strong:   rgba(15, 61, 40, 0.40);
+  --neon:          #1a9c4b;
+  --neon-dim:      #26b55e;
+  --gold:          #c69c11;
+  --chalk:         #0a1210;
+  --muted:         #5a7062;
+  --danger:        #e03c2a;
+  --gem:           #754fb3;
+  --card:          #ffffff;
+  --card-edge:     #cbd5ce;
+  
+  --bg-grad-1:     #e2ede5;
+  --bg-grad-2:     #f4f7f5;
+  --lobby-grad-1:  rgba(179, 219, 196, 0.55);
+  --lobby-grad-2:  #eaf0eb;
 }
 
 /* ----------------------------------------------------------
@@ -50,8 +80,8 @@ body {
   font-family: var(--font-body);
   color: var(--chalk);
   background:
-    radial-gradient(ellipse 90% 70% at 50% -10%, #163528 0%, transparent 55%),
-    linear-gradient(180deg, #0a1210 0%, var(--void) 100%);
+    radial-gradient(ellipse 90% 70% at 50% -10%, var(--bg-grad-1) 0%, transparent 55%),
+    linear-gradient(180deg, var(--bg-grad-2) 0%, var(--void) 100%);
 }
 
 .is-hidden {
@@ -70,8 +100,8 @@ body {
   justify-content: center;
   padding: 1.5rem;
   background:
-    radial-gradient(ellipse 60% 45% at 50% 40%, rgba(22, 70, 48, 0.55) 0%, transparent 70%),
-    linear-gradient(180deg, #0c1a14 0%, var(--void) 100%);
+    radial-gradient(ellipse 60% 45% at 50% 40%, var(--lobby-grad-1) 0%, transparent 70%),
+    linear-gradient(180deg, var(--lobby-grad-2) 0%, var(--void) 100%);
 }
 
 .lobby__inner {
@@ -1618,4 +1648,50 @@ body {
   .player-card--auction .player-card__name {
     font-size: clamp(1.4rem, 5vw, 1.8rem);
   }
+}
+
+/* ----------------------------------------------------------
+   Toolbar & RTL Overrides
+---------------------------------------------------------- */
+.top-toolbar {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 100;
+}
+[dir="rtl"] .top-toolbar {
+  right: auto;
+  left: 1rem;
+}
+.toolbar-btn {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  color: var(--chalk);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(5px);
+}
+.toolbar-btn:hover {
+  background: var(--panel-2);
+  border-color: var(--neon);
+}
+
+[dir="rtl"] .lobby__name-input {
+  text-align: right;
+}
+[dir="rtl"] .pitch-col__title {
+  text-align: right;
+}
+[dir="rtl"] .dev-info {
+  text-align: right;
 }

@@ -15,26 +15,31 @@
 </head>
 
 <body>
+  <div class="top-toolbar">
+    <button id="btn-toggle-theme" class="toolbar-btn" aria-label="Toggle Theme">☀️</button>
+    <button id="btn-toggle-lang" class="toolbar-btn" aria-label="Toggle Language">AR</button>
+  </div>
+
   <!-- ═══════════════════════════════════════════════════════════════════════
        LOBBY
   ═══════════════════════════════════════════════════════════════════════ -->
   <div id="lobby" class="lobby" aria-label="Lobby">
     <div class="lobby__inner">
-      <p class="lobby__eyebrow">Live Draft Auction</p>
-      <h1 class="lobby__brand">Embabi Games</h1>
-      <p class="lobby__welcome">Welcome to Embabi Games</p>
-      <p id="lobby-status" class="lobby__status">Connecting…</p>
+      <p class="lobby__eyebrow" data-i18n="lobby_eyebrow">Live Draft Auction</p>
+      <h1 class="lobby__brand" data-i18n="lobby_brand">Embabi Games</h1>
+      <p class="lobby__welcome" data-i18n="lobby_welcome">Welcome to Embabi Games</p>
+      <p id="lobby-status" class="lobby__status" data-i18n="connecting">Connecting…</p>
 
       <!-- FEATURE 2: Team Name Input — shown first -->
       <div id="lobby-name-step" class="lobby__name-step">
-        <p class="lobby__name-prompt">Enter your team name</p>
+        <p class="lobby__name-prompt" data-i18n="team_name_prompt">Enter your team name</p>
         <div class="lobby__name-row">
-          <input type="text" id="input-team-name" class="lobby__name-input" placeholder="e.g. FC Legends" maxlength="24"
+          <input type="text" id="input-team-name" class="lobby__name-input" placeholder="e.g. FC Legends" data-i18n-placeholder="team_name_placeholder" maxlength="24"
             autocomplete="off" spellcheck="false" />
         </div>
 
         <div style="margin-top: 20px; width: 100%;">
-          <button type="button" id="btn-create-match" class="btn btn--join" style="width: 100%;">
+          <button type="button" id="btn-create-match" class="btn btn--join" style="width: 100%;" data-i18n="create_match">
             Create New Match
           </button>
         </div>
@@ -42,18 +47,18 @@
         <div
           style="display: flex; align-items: center; justify-content: center; margin: 25px 0; color: #666; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
           <span style="flex: 1; height: 1px; background: #333;"></span>
-          <span style="padding: 0 15px;">--- OR ---</span>
+          <span style="padding: 0 15px;" data-i18n="or">--- OR ---</span>
           <span style="flex: 1; height: 1px; background: #333;"></span>
         </div>
 
-        <p class="lobby__name-prompt">Join an existing match</p>
+        <p class="lobby__name-prompt" data-i18n="join_prompt">Join an existing match</p>
         <div class="lobby__name-row" style="margin-bottom: 10px;">
-          <input type="text" id="input-room-code" class="lobby__name-input" placeholder="Room Code" maxlength="6"
+          <input type="text" id="input-room-code" class="lobby__name-input" placeholder="Room Code" data-i18n-placeholder="room_code_placeholder" maxlength="6"
             autocomplete="off" spellcheck="false" style="text-transform: uppercase;" />
         </div>
 
         <div style="width: 100%;">
-          <button type="button" id="btn-join-match" class="btn btn--join" style="width: 100%;">
+          <button type="button" id="btn-join-match" class="btn btn--join" style="width: 100%;" data-i18n="join_match">
             Join Match
           </button>
         </div>
@@ -63,9 +68,9 @@
         <div style="background: rgba(18, 24, 20, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 14px; padding: 0.8rem 1.2rem; display: flex; align-items: center; gap: 1rem; margin-top: 2rem;">
           <img src="logo.png" alt="Developer Logo" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid rgba(212, 175, 55, 0.8); object-fit: cover; flex-shrink: 0;" />
           <div style="text-align: left; line-height: 1.3;">
-            <div style="color: #d4af37; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.05em;">EMBABI GAMES</div>
-            <div style="color: #e7efe8; font-size: 0.85rem;">Crafted by Ahmed Salah</div>
-            <div style="color: #8fa396; font-size: 0.75rem;">MERN Stack Developer</div>
+            <div style="color: #d4af37; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.05em;" data-i18n="dev_brand">EMBABI GAMES</div>
+            <div style="color: #e7efe8; font-size: 0.85rem;" data-i18n="dev_crafted">Crafted by Ahmed Salah</div>
+            <div style="color: #8fa396; font-size: 0.75rem;" data-i18n="dev_role">MERN Stack Developer</div>
           </div>
         </div>
       </div>
@@ -77,10 +82,10 @@
           ROOM CODE: ----</div>
 
         <button type="button" id="btn-mode-5v5" class="btn btn--mode" disabled>
-          5-a-Side <span>(100M Budget)</span>
+          <span data-i18n="mode_5v5">5-a-Side</span> <span data-i18n="budget_100m">(100M Budget)</span>
         </button>
         <button type="button" id="btn-mode-11v11" class="btn btn--mode" disabled>
-          11-a-Side + Manager <span>(200M Budget)</span>
+          <span data-i18n="mode_11v11">11-a-Side + Manager</span> <span data-i18n="budget_200m">(200M Budget)</span>
         </button>
       </div>
 
@@ -94,7 +99,7 @@
   <div id="finished-overlay" class="finished-overlay is-hidden" aria-live="polite">
     <!-- Phase 1: preparing text (shown briefly) -->
     <div id="scoreboard-preparing" class="scoreboard-preparing">
-      <p class="finished-overlay__text">
+      <p class="finished-overlay__text" data-i18n="squads_completed">
         Squads Completed! Preparing Match Simulation...
       </p>
     </div>
@@ -104,7 +109,7 @@
       <div class="scoreboard-result__inner">
         <!-- FULL TIME badge -->
         <div class="scoreboard-header">
-          <span class="scoreboard-header__badge">Full Time</span>
+          <span class="scoreboard-header__badge" data-i18n="full_time">Full Time</span>
         </div>
 
         <!-- Teams & Score -->
@@ -133,7 +138,7 @@
 
         <!-- FEATURE 5: Match Stats -->
         <div id="sb-stats" class="scoreboard-stats">
-          <h3 class="scoreboard-stats__title">Match Stats</h3>
+          <h3 class="scoreboard-stats__title" data-i18n="match_stats">Match Stats</h3>
           <div class="scoreboard-stats__grid">
             <!-- Possession -->
             <div class="stat-row">
@@ -143,7 +148,7 @@
                   <div class="stat-row__fill stat-row__fill--left" id="stat-poss-fill-l"></div>
                   <div class="stat-row__fill stat-row__fill--right" id="stat-poss-fill-r"></div>
                 </div>
-                <span class="stat-row__label">Ball Possession</span>
+                <span class="stat-row__label" data-i18n="ball_possession">Ball Possession</span>
               </div>
               <span id="stat-p2-poss" class="stat-row__val stat-row__val--right">—%</span>
             </div>
@@ -155,7 +160,7 @@
                   <div class="stat-row__fill stat-row__fill--left" id="stat-shots-fill-l"></div>
                   <div class="stat-row__fill stat-row__fill--right" id="stat-shots-fill-r"></div>
                 </div>
-                <span class="stat-row__label">Total Shots</span>
+                <span class="stat-row__label" data-i18n="total_shots">Total Shots</span>
               </div>
               <span id="stat-p2-shots" class="stat-row__val stat-row__val--right">—</span>
             </div>
@@ -167,7 +172,7 @@
                   <div class="stat-row__fill stat-row__fill--left" id="stat-sot-fill-l"></div>
                   <div class="stat-row__fill stat-row__fill--right" id="stat-sot-fill-r"></div>
                 </div>
-                <span class="stat-row__label">Shots on Target</span>
+                <span class="stat-row__label" data-i18n="shots_on_target">Shots on Target</span>
               </div>
               <span id="stat-p2-sot" class="stat-row__val stat-row__val--right">—</span>
             </div>
@@ -176,7 +181,7 @@
 
         <!-- FEATURE 5: Man of the Match -->
         <div id="sb-motm" class="scoreboard-motm is-hidden">
-          <div class="motm-badge">⭐ Man of the Match</div>
+          <div class="motm-badge" data-i18n="man_of_the_match">⭐ Man of the Match</div>
           <div class="motm-card">
             <span id="motm-ovr" class="motm-card__ovr">—</span>
             <div class="motm-card__info">
@@ -189,11 +194,11 @@
 
         <!-- FEATURE 5: Commentary -->
         <div id="sb-commentary" class="scoreboard-commentary is-hidden">
-          <h3 class="scoreboard-commentary__title">Match Highlights</h3>
+          <h3 class="scoreboard-commentary__title" data-i18n="match_highlights">Match Highlights</h3>
           <ul id="commentary-list" class="commentary-list"></ul>
         </div>
 
-        <button type="button" id="btn-play-again" class="btn btn--play-again">
+        <button type="button" id="btn-play-again" class="btn btn--play-again" data-i18n="play_again">
           &#x21BA; Play Again
         </button>
       </div>
@@ -209,10 +214,10 @@
       <header class="pitch-col__header">
         <div>
           <h2 class="pitch-col__title" id="p1-title">Player 1</h2>
-          <p class="pitch-col__you is-hidden" id="p1-you">YOU</p>
+          <p class="pitch-col__you is-hidden" id="p1-you" data-i18n="you">YOU</p>
         </div>
         <div class="budget-chip">
-          <span class="budget-chip__label">Budget</span>
+          <span class="budget-chip__label" data-i18n="budget_label">Budget</span>
           <span class="budget-chip__value"><span id="p1-budget">—</span>M</span>
         </div>
       </header>
@@ -231,19 +236,19 @@
     <section class="auction-col" aria-label="Auction block">
       <header class="auction-col__brand">
         <h1 class="brand">Embabi Games</h1>
-        <p id="status" class="status">Waiting…</p>
+        <p id="status" class="status" data-i18n="waiting">Waiting…</p>
         <div id="room-code-display" style="color: #666; font-size: 14px; margin-top: 4px; display: none;">Room Code:
           <strong id="room-code-value" style="color: #fff;"></strong></div>
       </header>
 
       <div class="auction-block">
-        <p class="auction-block__eyebrow" id="auction-eyebrow">
+        <p class="auction-block__eyebrow" id="auction-eyebrow" data-i18n="free_agent_dilemma">
           The Free Agent Dilemma
         </p>
 
         <div class="pair-row" id="pair-row">
           <div class="pair-slot">
-            <span class="pair-slot__label">Auction Target</span>
+            <span class="pair-slot__label" data-i18n="auction_target">Auction Target</span>
             <div id="auction-card" class="player-card player-card--auction player-card--empty">
               <span class="player-card__ovr" id="auction-ovr">—</span>
               <span class="player-card__pos" id="auction-pos">—</span>
@@ -253,12 +258,12 @@
           </div>
 
           <div class="pair-slot">
-            <span class="pair-slot__label pair-slot__label--free" id="free-slot-label">Free for Loser</span>
+            <span class="pair-slot__label pair-slot__label--free" id="free-slot-label" data-i18n="free_for_loser">Free for Loser</span>
             <div id="free-card" class="mystery-card" aria-label="Hidden free agent">
               <div class="mystery-card__inner" id="free-card-inner">
                 <div class="mystery-card__face mystery-card__face--back">
                   <span class="mystery-card__q">?</span>
-                  <span class="mystery-card__tag">FREE FOR LOSER</span>
+                  <span class="mystery-card__tag" data-i18n="free_for_loser_caps">FREE FOR LOSER</span>
                 </div>
                 <div class="mystery-card__face mystery-card__face--front">
                   <span class="player-card__ovr" id="free-ovr">—</span>
@@ -283,21 +288,21 @@
           ⏱️ <span id="timer-value">15</span>s
         </div>
         <div class="bid-panel">
-          <span class="bid-panel__label">Current Bid</span>
+          <span class="bid-panel__label" data-i18n="current_bid">Current Bid</span>
           <span id="current-bid" class="bid-panel__value">—</span>
-          <p id="highest-bidder" class="bid-panel__bidder">No bids yet</p>
+          <p id="highest-bidder" class="bid-panel__bidder" data-i18n="no_bids_yet">No bids yet</p>
         </div>
 
         <!-- FEATURE 3: Custom bid input replaces +1M / +5M buttons -->
         <div class="bid-actions">
           <div class="bid-input-wrap">
-            <input type="number" id="input-bid-amount" class="bid-input" placeholder="Enter bid (M)" min="1" step="1"
+            <input type="number" id="input-bid-amount" class="bid-input" placeholder="Enter bid (M)" data-i18n-placeholder="enter_bid_placeholder" min="1" step="1"
               disabled />
-            <button type="button" id="btn-place-bid" class="btn btn--bid" disabled>
+            <button type="button" id="btn-place-bid" class="btn btn--bid" disabled data-i18n="place_bid">
               Place Bid
             </button>
           </div>
-          <button type="button" id="btn-pass" class="btn btn--pass" disabled>
+          <button type="button" id="btn-pass" class="btn btn--pass" disabled data-i18n="pass">
             Pass
           </button>
         </div>
@@ -310,10 +315,10 @@
       <header class="pitch-col__header">
         <div>
           <h2 class="pitch-col__title" id="p2-title">Player 2</h2>
-          <p class="pitch-col__you is-hidden" id="p2-you">YOU</p>
+          <p class="pitch-col__you is-hidden" id="p2-you" data-i18n="you">YOU</p>
         </div>
         <div class="budget-chip">
-          <span class="budget-chip__label">Budget</span>
+          <span class="budget-chip__label" data-i18n="budget_label">Budget</span>
           <span class="budget-chip__value"><span id="p2-budget">—</span>M</span>
         </div>
       </header>
@@ -340,9 +345,9 @@
         <img src="logo.png" alt="Ahmed Salah Logo" class="dev-logo-img" />
       </div>
       <div class="dev-info">
-        <span class="dev-title">EMBABI GAMES</span>
-        <span class="dev-subtitle">Crafted by <strong>Ahmed Salah</strong></span>
-        <span class="dev-stack">MERN Stack Developer</span>
+        <span class="dev-title" data-i18n="dev_brand">EMBABI GAMES</span>
+        <span class="dev-subtitle"><span data-i18n="dev_crafted">Crafted by</span> <strong>Ahmed Salah</strong></span>
+        <span class="dev-stack" data-i18n="dev_role">MERN Stack Developer</span>
       </div>
     </div>
   </footer>

@@ -28,6 +28,178 @@
   }
 
   // -------------------------------------------------------------------------
+  // i18n & THEME SETTINGS
+  // -------------------------------------------------------------------------
+  const translations = {
+    en: {
+      lobby_eyebrow: "Live Draft Auction",
+      lobby_brand: "Embabi Games",
+      lobby_welcome: "Welcome to Embabi Games",
+      connecting: "Connecting…",
+      team_name_prompt: "Enter your team name",
+      team_name_placeholder: "e.g. FC Legends",
+      create_match: "Create New Match",
+      or: "--- OR ---",
+      join_prompt: "Join an existing match",
+      room_code_placeholder: "Room Code",
+      join_match: "Join Match",
+      dev_brand: "EMBABI GAMES",
+      dev_crafted: "Crafted by",
+      dev_role: "MERN Stack Developer",
+      room_code_display: "ROOM CODE:",
+      mode_5v5: "5-a-Side",
+      budget_100m: "(100M Budget)",
+      mode_11v11: "11-a-Side + Manager",
+      budget_200m: "(200M Budget)",
+      squads_completed: "Squads Completed! Preparing Match Simulation...",
+      full_time: "Full Time",
+      match_stats: "Match Stats",
+      ball_possession: "Ball Possession",
+      total_shots: "Total Shots",
+      shots_on_target: "Shots on Target",
+      man_of_the_match: "⭐ Man of the Match",
+      match_highlights: "Match Highlights",
+      play_again: "↻ Play Again",
+      you: "YOU",
+      budget_label: "Budget",
+      waiting: "Waiting…",
+      free_agent_dilemma: "The Free Agent Dilemma",
+      auction_target: "Auction Target",
+      free_for_loser: "Free for Loser",
+      free_for_loser_caps: "FREE FOR LOSER",
+      current_bid: "Current Bid",
+      no_bids_yet: "No bids yet",
+      enter_bid_placeholder: "Enter bid (M)",
+      place_bid: "Place Bid",
+      pass: "Pass",
+      room_not_found: "Room not found.",
+      room_full: "Room is full (2/2).",
+      name_required: "Team name is required.",
+      code_required: "Room code required.",
+      your_turn: "Your Turn to Bid!",
+      opponents_turn: "Opponent's Turn...",
+      highest_bidder_you: "You (Highest)",
+      highest_bidder_opp: "Opponent (Highest)",
+      bid_from_0m: "Bid from 0M",
+      free: "FREE",
+      waiting_for_round: "Waiting for round",
+      winner: "WINNER",
+      draw: "DRAW",
+      copied: "Copied!"
+    },
+    ar: {
+      lobby_eyebrow: "مزاد مسودة مباشر",
+      lobby_brand: "ألعاب إمبابي",
+      lobby_welcome: "مرحباً بكم في ألعاب إمبابي",
+      connecting: "جاري الاتصال...",
+      team_name_prompt: "أدخل اسم فريقك",
+      team_name_placeholder: "مثال: أساطير إف سي",
+      create_match: "إنشاء مباراة",
+      or: "--- أو ---",
+      join_prompt: "انضم إلى مباراة حالية",
+      room_code_placeholder: "رمز الغرفة",
+      join_match: "انضم للمباراة",
+      dev_brand: "ألعاب إمبابي",
+      dev_crafted: "تم التطوير بواسطة",
+      dev_role: "مطور واجهات ومكتبات شاملة",
+      room_code_display: "رمز الغرفة:",
+      mode_5v5: "5 لاعبين",
+      budget_100m: "(ميزانية 100M)",
+      mode_11v11: "11 لاعب + مدرب",
+      budget_200m: "(ميزانية 200M)",
+      squads_completed: "اكتملت الفرق! جاري تحضير محاكاة المباراة...",
+      full_time: "نهاية المباراة",
+      match_stats: "إحصائيات المباراة",
+      ball_possession: "الاستحواذ على الكرة",
+      total_shots: "إجمالي التسديدات",
+      shots_on_target: "التسديدات على المرمى",
+      man_of_the_match: "⭐ رجل المباراة",
+      match_highlights: "أبرز اللحظات",
+      play_again: "↻ العب مرة أخرى",
+      you: "أنت",
+      budget_label: "الميزانية",
+      waiting: "في الانتظار...",
+      free_agent_dilemma: "معضلة اللاعب الحر",
+      auction_target: "هدف المزاد",
+      free_for_loser: "مجاني للخاسر",
+      free_for_loser_caps: "مجاني للخاسر",
+      current_bid: "العطاء الحالي",
+      no_bids_yet: "لا توجد عطاءات بعد",
+      enter_bid_placeholder: "أدخل العطاء (M)",
+      place_bid: "تقديم العطاء",
+      pass: "تجاوز",
+      room_not_found: "الغرفة غير موجودة.",
+      room_full: "الغرفة ممتلئة (2/2).",
+      name_required: "اسم الفريق مطلوب.",
+      code_required: "رمز الغرفة مطلوب.",
+      your_turn: "دورك لتقديم عطاء!",
+      opponents_turn: "دور الخصم...",
+      highest_bidder_you: "أنت (الأعلى)",
+      highest_bidder_opp: "الخصم (الأعلى)",
+      bid_from_0m: "العطاء يبدأ من 0M",
+      free: "مجاني",
+      waiting_for_round: "في انتظار الجولة",
+      winner: "الفائز",
+      draw: "تعادل",
+      copied: "تم النسخ!"
+    }
+  };
+
+  let currentLang = localStorage.getItem('lang') || 'en';
+  let currentTheme = localStorage.getItem('theme') || 'dark';
+
+  function t(key) {
+    return (translations[currentLang] && translations[currentLang][key]) ? translations[currentLang][key] : key;
+  }
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    document.getElementById('btn-toggle-lang').textContent = lang === 'ar' ? 'EN' : 'AR';
+    
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang][key]) {
+        el.innerHTML = translations[lang][key]; // innerHTML allows icons like ⭐
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (translations[lang][key]) {
+        el.setAttribute('placeholder', translations[lang][key]);
+      }
+    });
+  }
+
+  function setTheme(theme) {
+    currentTheme = theme;
+    localStorage.setItem('theme', theme);
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+      document.getElementById('btn-toggle-theme').textContent = '🌙';
+    } else {
+      document.body.classList.remove('light-theme');
+      document.getElementById('btn-toggle-theme').textContent = '☀️';
+    }
+  }
+
+  document.getElementById('btn-toggle-lang').addEventListener('click', () => {
+    setLanguage(currentLang === 'en' ? 'ar' : 'en');
+    unlockAudio();
+  });
+
+  document.getElementById('btn-toggle-theme').addEventListener('click', () => {
+    setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    unlockAudio();
+  });
+
+  // Init
+  setTheme(currentTheme);
+  setLanguage(currentLang);
+
+  // -------------------------------------------------------------------------
   // DOM — Lobby
   // -------------------------------------------------------------------------
   const lobbyEl = document.getElementById('lobby');
@@ -252,16 +424,16 @@
     rightTeam.classList.remove('is-winner', 'is-loser');
     sbWinnerBanner.classList.remove('is-draw', 'is-win');
 
-    if (data.winnerId === 'draw') {
-      sbWinnerText.textContent = "IT'S A DRAW!";
+    if (data.p1Goals === data.p2Goals && data.p1Ovr === data.p2Ovr) {
+      sbWinnerText.textContent = t('draw');
       sbWinnerBanner.classList.add('is-draw');
-    } else if (data.winnerId === data.p1Id) {
-      sbWinnerText.textContent = `${data.p1Label} WINS!`;
+    } else if (data.p1Goals > data.p2Goals || (data.p1Goals === data.p2Goals && data.p1Ovr > data.p2Ovr)) {
+      sbWinnerText.textContent = `${data.p1Label} ${t('winner')}`;
       sbWinnerBanner.classList.add('is-win');
       leftTeam.classList.add('is-winner');
       rightTeam.classList.add('is-loser');
     } else {
-      sbWinnerText.textContent = `${data.p2Label} WINS!`;
+      sbWinnerText.textContent = `${data.p2Label} ${t('winner')}`;
       sbWinnerBanner.classList.add('is-win');
       rightTeam.classList.add('is-winner');
       leftTeam.classList.add('is-loser');
@@ -614,8 +786,8 @@
       auctionCardEl.classList.add('player-card--empty');
       auctionOvrEl.textContent = '—';
       auctionPosEl.textContent = '—';
-      auctionNameEl.textContent = 'Waiting for round';
-      auctionMetaEl.textContent = 'Bid from 0M';
+      auctionNameEl.textContent = t('waiting_for_round');
+      auctionMetaEl.textContent = t('bid_from_0m');
       return;
     }
 
@@ -634,7 +806,7 @@
     freeOvrEl.textContent = '—';
     freePosEl.textContent = '—';
     freeNameEl.textContent = '—';
-    freeMetaEl.textContent = '0M · FREE';
+    freeMetaEl.textContent = '0M · ' + t('free');
     freeOutcomeEl.textContent = '';
   }
 
@@ -657,7 +829,7 @@
     freeOvrEl.textContent = freePlayer.ovr != null ? String(freePlayer.ovr) : '—';
     freePosEl.textContent = freePlayer.position || '—';
     freeNameEl.textContent = freePlayer.name || '—';
-    freeMetaEl.textContent = '0M · FREE';
+    freeMetaEl.textContent = '0M · ' + t('free');
     freeOutcomeEl.textContent = outcomeLabel(freePlayer.outcome);
 
     freeCardEl.classList.remove('is-gem', 'is-standard');
@@ -805,9 +977,13 @@
     }
 
     if (state.highestBidder && state.highestBidder.label) {
-      highestBidderEl.textContent = `Highest bidder: ${state.highestBidder.label}`;
+      let bidderText = t('no_bids_yet');
+      if (state.highestBidder.id) {
+        bidderText = (state.highestBidder.id === myId) ? t('highest_bidder_you') : t('highest_bidder_opp');
+      }
+      highestBidderEl.textContent = bidderText;
     } else {
-      highestBidderEl.textContent = 'No bids yet';
+      highestBidderEl.textContent = t('no_bids_yet');
     }
 
     if (phase === 'auction' && state.roundActive && auction && state.seatsFilled >= 2) {
