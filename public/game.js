@@ -217,6 +217,13 @@
 
   // DOM — Overlays / board
   const finishedOverlay = document.getElementById('finished-overlay');
+  const scoreboardPreparing = document.getElementById('scoreboard-preparing');
+  const scoreboardResult = document.getElementById('scoreboard-result');
+  const matchSimulationModal = document.getElementById('match-simulation-modal');
+  const simTeam1 = document.getElementById('sim-team-1');
+  const simScore = document.getElementById('sim-score');
+  const simTeam2 = document.getElementById('sim-team-2');
+  const simCommentary = document.getElementById('sim-commentary');
   const boardEl = document.getElementById('board');
 
   // DOM — Auction center
@@ -365,6 +372,7 @@
     finishedOverlay.classList.add('is-hidden');
     scoreboardResult.classList.add('is-hidden');
     scoreboardPreparing.classList.remove('is-hidden');
+    if (matchSimulationModal) matchSimulationModal.classList.add('is-hidden');
     setBiddingEnabled(false);
     clearPitch(slotsP1);
     clearPitch(slotsP2);
@@ -405,6 +413,7 @@
   function showScoreboard(data) {
     phase = 'simulation';
     scoreboardPreparing.classList.add('is-hidden');
+    if (matchSimulationModal) matchSimulationModal.classList.add('is-hidden');
     scoreboardResult.classList.remove('is-hidden');
 
     // Populate team names and scores
@@ -1246,6 +1255,51 @@
 
   socket.on('matchResult', (data) => {
     showScoreboard(data);
+  });
+
+  let simScoreP1 = 0;
+  let simScoreP2 = 0;
+  let currentSimP1Label = '';
+
+  socket.on('match_starting', (data) => {
+    scoreboardPreparing.classList.add('is-hidden');
+    scoreboardResult.classList.add('is-hidden');
+    if (matchSimulationModal) {
+      matchSimulationModal.classList.remove('is-hidden');
+      simTeam1.textContent = data.p1Label;
+      simTeam2.textContent = data.p2Label;
+      simScore.textContent = '0 - 0';
+      simCommentary.innerHTML = '';
+      simScoreP1 = 0;
+      simScoreP2 = 0;
+      currentSimP1Label = data.p1Label;
+    }
+  });
+
+  socket.on('match_event', (ev) => {
+    if (!matchSimulationModal) return;
+    
+    if (ev.type === 'goal') {
+      if (ev.team === currentSimP1Label) {
+        simScoreP1++;
+      } else {
+        simScoreP2++;
+      }
+      simScore.textContent = `${simScoreP1} - ${simScoreP2}`;
+    }
+
+    const li = document.createElement('li');
+    li.className = `sim-commentary-item event-${ev.type}`;
+    li.innerHTML = `
+      <span class="sim-minute">${ev.minute}'</span>
+      <span class="sim-text">${ev.text}</span>
+    `;
+    simCommentary.appendChild(li);
+    simCommentary.scrollTop = simCommentary.scrollHeight;
+  });
+
+  socket.on('match_finished', (data) => {
+    // Rely on matchResult to show the cinematic scoreboard
   });
 
   socket.on('returnToLobby', ({ message }) => {

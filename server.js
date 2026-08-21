@@ -97,6 +97,10 @@ function clearTimers(room) {
     clearInterval(room.bidTimer);
     room.bidTimer = null;
   }
+  if (room.simulationInterval) {
+    clearInterval(room.simulationInterval);
+    room.simulationInterval = null;
+  }
 }
 
 /**
@@ -471,40 +475,56 @@ function generateCommentary(p1Label, p2Label, p1Goals, p2Goals, p1Squad, p2Squad
   const minutePool = [];
   for (let i = 0; i < 90; i++) minutePool.push(i + 1);
 
-  // Shuffle minutes
   for (let i = minutePool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [minutePool[i], minutePool[j]] = [minutePool[j], minutePool[i]];
   }
 
-  const goalMinutes = minutePool.slice(0, p1Goals + p2Goals).sort((a, b) => a - b);
-  let g1 = 0, g2 = 0;
-  const p1Scorers = p1Squad.filter((p) => ['ST', 'LW', 'RW', 'CM'].includes(p.position));
-  const p2Scorers = p2Squad.filter((p) => ['ST', 'LW', 'RW', 'CM'].includes(p.position));
+  const numEvents = p1Goals + p2Goals + Math.floor(Math.random() * 4) + 3; // total events
+  const selectedMinutes = minutePool.slice(0, numEvents).sort((a, b) => a - b);
+  
+  const eventTypes = [];
+  for (let i=0; i<p1Goals; i++) eventTypes.push({ type: 'goal', team: p1Label, squad: p1Squad });
+  for (let i=0; i<p2Goals; i++) eventTypes.push({ type: 'goal', team: p2Label, squad: p2Squad });
+  
+  const remainingCount = numEvents - p1Goals - p2Goals;
+  for (let i=0; i<remainingCount; i++) {
+    const isP1 = Math.random() > 0.5;
+    const teamLabel = isP1 ? p1Label : p2Label;
+    const squad = isP1 ? p1Squad : p2Squad;
+    const type = Math.random() > 0.5 ? 'miss' : 'normal';
+    eventTypes.push({ type, team: teamLabel, squad });
+  }
 
-  goalMinutes.forEach((min, i) => {
-    // Alternately assign goals — weighted by goals remaining for each team
-    const p1Remaining = p1Goals - g1;
-    const p2Remaining = p2Goals - g2;
-    let scoringTeamLabel, scorerName;
+  for (let i = eventTypes.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [eventTypes[i], eventTypes[j]] = [eventTypes[j], eventTypes[i]];
+  }
 
-    if (p1Remaining > 0 && (p2Remaining === 0 || Math.random() < p1Remaining / (p1Remaining + p2Remaining))) {
-      g1++;
-      scoringTeamLabel = p1Label;
-      const pool = p1Scorers.length ? p1Scorers : p1Squad;
-      const scorer = pool[Math.floor(Math.random() * pool.length)];
-      scorerName = scorer ? scorer.name : 'Unknown';
-    } else if (p2Remaining > 0) {
-      g2++;
-      scoringTeamLabel = p2Label;
-      const pool = p2Scorers.length ? p2Scorers : p2Squad;
-      const scorer = pool[Math.floor(Math.random() * pool.length)];
-      scorerName = scorer ? scorer.name : 'Unknown';
-    } else {
-      return;
-    }
+  const getPlayerName = (squad) => {
+    if (!squad || squad.length === 0) return 'Unknown';
+    const outfield = squad.filter(p => p.position !== 'Manager' && p.position !== 'GK');
+    const pool = outfield.length ? outfield : squad;
+    const player = pool[Math.floor(Math.random() * pool.length)];
+    return player ? player.name : 'Unknown';
+  };
 
-    events.push({ minute: min, team: scoringTeamLabel, scorer: scorerName, type: 'goal' });
+  const getActionText = (type, playerName, teamName) => {
+    if (type === 'goal') return `GOAL! ${playerName} scores a brilliant goal for ${teamName}! ⚽`;
+    if (type === 'miss') return `${playerName} shoots... but misses the target! ❌`;
+    return `${playerName} controls the play for ${teamName}... 🏃‍♂️`;
+  };
+
+  selectedMinutes.forEach((min, idx) => {
+    const ev = eventTypes[idx];
+    const playerName = getPlayerName(ev.squad);
+    events.push({
+      minute: min,
+      team: ev.team,
+      scorer: playerName,
+      type: ev.type,
+      text: getActionText(ev.type, playerName, ev.team)
+    });
   });
 
   return events;
@@ -540,23 +560,35 @@ function simulateMatch(room) {
   }
 
   room.phase = 'simulation';
+  broadcastState(room);
 
-  io.to(room.id).emit('matchResult', {
-    p1Id: ids[0],
-    p2Id: ids[1],
+  io.to(room.id).emit('match_starting', {
     p1Label: p1.label,
-    p2Label: p2.label,
-    p1Ovr,
-    p2Ovr,
-    p1Goals,
-    p2Goals,
-    winnerId,
-    stats,
-    commentary,
-    motm,
+    p2Label: p2.label
   });
 
-  broadcastState(room);
+  let currentEventIndex = 0;
+  
+  if (room.simulationInterval) clearInterval(room.simulationInterval);
+  
+  room.simulationInterval = setInterval(() => {
+    if (currentEventIndex < commentary.length) {
+      io.to(room.id).emit('match_event', commentary[currentEventIndex]);
+      currentEventIndex++;
+    } else {
+      clearInterval(room.simulationInterval);
+      room.simulationInterval = null;
+      io.to(room.id).emit('match_finished', {
+        p1Id: ids[0], p2Id: ids[1], p1Label: p1.label, p2Label: p2.label,
+        p1Ovr, p2Ovr, p1Goals, p2Goals, winnerId, stats, commentary, motm
+      });
+      // Fallback for backwards compatibility to trigger the cinematic scoreboard immediately
+      io.to(room.id).emit('matchResult', {
+        p1Id: ids[0], p2Id: ids[1], p1Label: p1.label, p2Label: p2.label,
+        p1Ovr, p2Ovr, p1Goals, p2Goals, winnerId, stats, commentary, motm
+      });
+    }
+  }, 2000);
 }
 
 function finishAuction(room) {
